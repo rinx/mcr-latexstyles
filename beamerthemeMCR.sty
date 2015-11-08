@@ -1,0 +1,405 @@
+% beamerthemeMCR.sty
+%
+% Author: Rintaro Okamura
+%
+% description:
+%   LaTeX style files for my Master Course Research
+%   This is for Beamer style file.
+
+\mode<presentation>
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{fontawesome}
+\usepackage{ragged2e}
+
+\makeatletter
+\def\progressbar@progressbar{} % the progress bar
+\newcount\progressbar@tmpcounta% auxiliary counter
+\newcount\progressbar@tmpcountb% auxiliary counter
+\newdimen\progressbar@pbht %progressbar height
+\newdimen\progressbar@pbwd %progressbar width
+\newdimen\progressbar@tmpdim % auxiliary dimension
+
+\progressbar@pbwd=\paperwidth
+\progressbar@pbht=0.3ex
+
+% pencil-like shapefill
+% http://tex.stackexchange.com/questions/39296/simulating-hand-drawn-lines
+% http://tex.stackexchange.com/questions/78044/fill-style-that-looks-like-hand-drawn-hand-filled-with-crayon
+\pgfdeclaredecoration{penciline}{initial}{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance,auto corner on length=1mm,]{
+        \pgfpathcurveto%
+        {% From
+            \pgfqpoint{\pgfdecoratedinputsegmentremainingdistance}
+                            {\pgfdecorationsegmentamplitude}
+        }
+        {%  Control 1
+        \pgfmathrand
+        \pgfpointadd{\pgfqpoint{\pgfdecoratedinputsegmentremainingdistance}{0pt}}
+                        {\pgfqpoint{-\pgfdecorationsegmentaspect\pgfdecoratedinputsegmentremainingdistance}%
+                                        {\pgfmathresult\pgfdecorationsegmentamplitude}
+                        }
+        }
+        {%TO 
+        \pgfpointadd{\pgfpointdecoratedinputsegmentlast}{\pgfpoint{1pt}{1pt}}
+        }
+    }
+    \state{final}{}
+}
+
+\setbeamercolor{title}{use=structure,fg=structure.fg}
+\setbeamercolor{subtitle}{use=structure,fg=structure.fg}
+\setbeamercolor{title page modifier}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor{frametitle}{use=structure,fg=alerted text.fg}
+
+%\usecolortheme{whale}
+\setbeamercolor*{palette primary}{use=structure,fg=structure.fg}
+\setbeamercolor*{palette secondary}{use=structure,fg=structure.fg}
+\setbeamercolor*{palette tertiary}{use=structure,fg=structure.fg}
+\setbeamercolor*{palette quaternary}{fg=black}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+%\usecolortheme{orchid}
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg}
+
+
+%\useinnertheme{rounded}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{items}[ball]
+\setbeamertemplate{sections/subsections in toc}[ball]
+\setbeamertemplate{part page}[default][colsep=-4bp,rounded=true,shadow=false]
+
+%\useoutertheme{infolines}
+% \setbeamercolor*{author in head/foot}{parent=palette tertiary}
+% \setbeamercolor*{title in head/foot}{parent=palette secondary}
+\setbeamercolor*{author in head/foot}{parent=palette primary}
+\setbeamercolor*{title in head/foot}{parent=palette primary}
+\setbeamercolor*{date in head/foot}{parent=palette primary}
+
+\setbeamercolor*{section in head/foot}{parent=palette tertiary}
+\setbeamercolor*{subsection in head/foot}{parent=palette primary}
+
+\def\progressbar@progressbar{%
+
+    \progressbar@tmpcounta=\insertframenumber
+    \progressbar@tmpcountb=\inserttotalframenumber
+    \progressbar@tmpdim=\progressbar@pbwd
+    \divide\progressbar@tmpdim by 100
+    \multiply\progressbar@tmpdim by \progressbar@tmpcounta
+    \divide\progressbar@tmpdim by \progressbar@tmpcountb
+    \multiply\progressbar@tmpdim by 100
+
+  \begin{tikzpicture}[very thin]
+    \draw[draw=MCRGray, line width=\progressbar@pbht, dashed]
+      (0pt, 0pt) -- (\progressbar@pbwd, 0pt);
+
+    \draw[draw=MCRGreen, line width=\progressbar@pbht, dashed] %
+      (0pt, 0pt) -- (\progressbar@tmpdim, 0pt);
+
+  \end{tikzpicture}%
+}
+
+\defbeamertemplate*{frametitle}{frametitle MCR}[1][left]
+{
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \@tempdima=\textwidth%
+  \advance\@tempdima by\beamer@leftmargin%
+  \advance\@tempdima by\beamer@rightmargin%
+  \textcolor{MCRGreen}{\Large\insertframetitle}
+  \vspace{-.2cm}
+
+  \begin{tikzpicture}[decoration={penciline, amplitude=2pt}]
+      \draw[MCRGray, dashed, line width=1.2pt, decorate]
+        (0pt, 0pt) -- (\textwidth - 3.1cm, 0pt);
+  \end{tikzpicture}
+}
+
+\defbeamertemplate*{footline}{infolines theme}
+{
+  \leavevmode%
+%   \begin{tikzpicture}
+%     \draw[MCRGreen] (0pt, 0pt) -- (\paperwidth, 0);
+%   \end{tikzpicture}
+  \hbox{%
+%   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+%     \usebeamerfont{author in head/foot}\insertshortauthor\expandafter\beamer@ifempty\expandafter{\beamer@shortinstitute}{}{~~(\insertshortinstitute)}
+%   \end{beamercolorbox}%
+%   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+%     \usebeamerfont{title in head/foot}\insertshorttitle
+%   \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.666667\paperwidth,ht=2.25ex,dp=1ex,left]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\hspace*{2ex}
+    \ifx\insertsectionhead\empty\else
+%         \ifx\insertsubsectionhead\empty\else
+            \ifx\insertsubsubsectionhead\empty
+            \insertsectionnumber.\ \insertsectionhead
+            \else
+            \insertsectionnumber.\ \insertsectionhead\ - \insertsubsectionhead
+            \fi
+%         \fi
+    \fi
+  \end{beamercolorbox}%
+  \hspace{-.1\paperwidth}
+  \begin{beamercolorbox}[wd=.433333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}%\insertshortdate{}\hspace*{2em}
+    Page: \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+%   \begin{beamercolorbox}[wd=\paperwidth,ht=0.5ex,center,dp=0ex]{white}%
+%     \progressbar@progressbar%
+%   \end{beamercolorbox}%
+  \vskip0pt%
+}
+
+% \defbeamertemplate*{headline}{infolines theme}
+% {
+%   \leavevmode%
+%   \hbox{%
+%   \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.65ex,dp=1.5ex,right]{section in head/foot}%
+%     \usebeamerfont{section in head/foot}\insertsectionhead\hspace*{2ex}
+%   \end{beamercolorbox}%
+%   \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.65ex,dp=1.5ex,left]{subsection in head/foot}%
+%     \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertsubsectionhead
+%   \end{beamercolorbox}}%
+%   \vskip0pt%
+% }
+
+\defbeamertemplate*{title page}{title MCR}
+{
+  \justifying
+  \vbox{}
+  \vfill
+  \begingroup
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\large\inserttitle\par}
+  \begin{tikzpicture}[decoration={penciline,amplitude=0pt}]
+      \draw[MCRGray, dashed, line width=1.2pt, decorate]
+        (0pt, 0pt) -- (\textwidth - 3.1cm, 0pt);
+  \end{tikzpicture}
+  \ifx\insertsubtitle\@empty%
+  \else%
+  \vskip.6em%
+  {\usebeamerfont{subtitle}\footnotesize\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+  \fi%     
+  \vskip3.2em\par
+  {\usebeamerfont{author}\small\insertauthor}
+  \vskip.05em\par
+  {\usebeamerfont{date}\small\insertdate}
+  \endgroup
+  \vfill
+}
+
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+% ---
+
+
+\definecolor{MCRGreen}{HTML}{32978B}
+\definecolor{MCRYellow}{HTML}{C5A205}
+\definecolor{MCRBlue}{HTML}{3582A1}
+\definecolor{MCRGray}{HTML}{AAAAAA}
+\setbeamercolor{normal text}{fg=black, bg=white}
+\setbeamercolor{structure}{fg=MCRGreen}
+\setbeamercolor{alerted text}{fg=MCRYellow}
+\setbeamercolor{example text}{fg=MCRBlue}
+
+% \setbeamertemplate{enumerate items}[circle]
+\setbeamercolor{enumerate item}{fg=example text.fg}
+\setbeamertemplate{enumerate item}{\bf \insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\bf \insertenumlabel.}
+\setbeamertemplate{enumerate subsubitem}{\bf \insertenumlabel.}
+
+\setbeamertemplate{itemize item}{\footnotesize\faCheckSquareO}
+\setbeamertemplate{itemize subitem}{\scriptsize\faPlus}
+\setbeamertemplate{itemize subsubitem}{\tiny\faMinus}
+
+\setbeamercolor{itemize item}{fg=MCRGreen}
+\setbeamercolor{itemize subitem}{fg=MCRGreen}
+\setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+\setbeamercolor{enumerate item}{fg=MCRGreen}
+\setbeamercolor{enumerate subitem}{fg=MCRGreen}
+\setbeamercolor{enumerate subsubitem}{fg=MCRGreen}
+
+\setbeamerfont{title}{series=\bfseries}
+
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{author in head/foot}{series=\bfseries}
+\setbeamerfont{title in head/foot}{series=\bfseries}
+\setbeamerfont{date in head/foot}{series=\bfseries}
+\setbeamertemplate{caption}[numbered]
+\renewcommand{\figurename}{Fig.}
+
+\setbeamertemplate{section in toc}{
+\bfseries\inserttocsectionnumber. \inserttocsection \par}
+\setbeamertemplate{subsection in toc}{
+\bfseries\hspace{.5cm}\textcolor{MCRGreen!70}{\small\inserttocsectionnumber.\inserttocsubsectionnumber. \inserttocsubsection} \par}
+\setbeamertemplate{subsubsection in toc}{
+\bfseries\hspace{1.0cm}\textcolor{MCRGray}{\footnotesize\inserttocsectionnumber.\inserttocsubsectionnumber.\inserttocsubsubsectionnumber. \inserttocsubsubsection} \par}
+
+
+\setbeamercolor{caption name}{fg=structure}
+
+% for printing handout
+% status bar
+\newcommand{\pfootnotesize}{\footnotesize}
+\newcommand{\ptinysize}{\tiny}
+
+% blocks
+
+\newcommand{\tblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGreen,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGreen,line width=0.3mm,dashed}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tyellowblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRYellow,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRYellow,line width=0.3mm,dashed}, #1]
+        \setbeamercolor{itemize item}{fg=MCRYellow}
+        \setbeamercolor{itemize subitem}{fg=MCRYellow}
+        \setbeamercolor{itemize subsubitem}{fg=MCRYellow}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tblueblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRBlue,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRBlue,line width=0.3mm,dashed}, #1]
+        \setbeamercolor{itemize item}{fg=MCRBlue}
+        \setbeamercolor{itemize subitem}{fg=MCRBlue}
+        \setbeamercolor{itemize subsubitem}{fg=MCRBlue}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tgrayblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGray,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGray,line width=0.3mm,dashed}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGray}
+        \setbeamercolor{itemize subitem}{fg=MCRGray}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGray}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\ntblock}[2][]{
+    \begin{tcolorbox}[enhanced,colframe=MCRGreen!0,colback=white,borderline={0.5mm}{0pt}{MCRGreen,dashed,decoration={penciline, amplitude=2pt},decorate}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #2
+    \end{tcolorbox}
+}
+
+\newcommand{\ntyellowblock}[2][]{
+    \begin{tcolorbox}[enhanced,colframe=MCRYellow!0,colback=white,,borderline={0.5mm}{0pt}{MCRYellow,dashed,decoration={penciline, amplitude=2pt},decorate}, #1]
+        \setbeamercolor{itemize item}{fg=MCRYellow}
+        \setbeamercolor{itemize subitem}{fg=MCRYellow}
+        \setbeamercolor{itemize subsubitem}{fg=MCRYellow}
+        #2
+    \end{tcolorbox}
+}
+
+\newcommand{\ntblueblock}[2][]{
+    \begin{tcolorbox}[enhanced,colframe=MCRBlue!0,colback=white,,borderline={0.5mm}{0pt}{MCRBlue,dashed,decoration={penciline, amplitude=2pt},decorate}, #1]
+        \setbeamercolor{itemize item}{fg=MCRBlue}
+        \setbeamercolor{itemize subitem}{fg=MCRBlue}
+        \setbeamercolor{itemize subsubitem}{fg=MCRBlue}
+        #2
+    \end{tcolorbox}
+}
+
+\newtcbox{\sMCRbox}[1][MCRGreen]{
+on line,arc=0pt,boxsep=0pt,
+left=3pt,right=3pt,top=4pt,bottom=4pt,
+boxrule=1pt,
+colframe=#1,colback=white!0,leftrule=3mm}
+
+
+% pencilmark
+
+\newtcbox{\pencilMark}[1][MCRGreen!30]
+{on line,enhanced,arc=0pt,outer arc=0pt,boxsep=0pt,left=1pt,right=1pt,
+top=2pt,bottom=2pt,boxrule=0pt,bottomrule=0pt,toprule=0pt,
+colupper=black,colback=black!0,colframe=black!0,
+overlay={\draw[#1,decoration={penciline,amplitude=2pt},
+decorate,line width=0.9mm,line join=round] (frame.north east) 
+\foreach \x[remember=\x as \lastx(initially 0)] in {0.25,0.5,0.75,1.0}{
+-- ($(frame.north east)!\lastx!(frame.south east)$)
+-- ($(frame.north east)!\lastx+0.05!(frame.north west)$)}-- (frame.south east)
+\foreach \x[remember=\x as \lastx(initially 0)] in {0.25,0.5,0.75,1.0,1.25}{
+-- ($(frame.south east)!\lastx!(frame.south west)$)
+--($(frame.north west)!\lastx+0.05!(frame.south west)$)};}
+}
+
+
+% bold
+
+\newcommand{\boldtext}[2][black]{
+    \textcolor{#1}{\bf #2}
+}
+
+% underline
+
+\newcommand{\uline}[2][black]{%
+    \tikz[baseline=(uline.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (uline) {#2};
+        \draw[draw=#1] (uline.south west) -- (uline.south east);
+    }%
+}%
+
+\newcommand{\udash}[2][black]{%
+    \tikz[baseline=(udash.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (udash) {#2};
+        \draw[densely dashed,draw=#1] (udash.south west) -- (udash.south east);
+    }%
+}%
+
+\newcommand{\updash}[2][black]{%
+    \tikz[baseline=(udash.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (udash) {#2};
+        \draw[densely dashed,decoration={penciline,amplitude=4pt},
+        decorate,line width=1.2pt,opacity=0.7,
+        draw=#1] (udash.south west) -- (udash.south east);
+    }%
+}%
+
+\newcommand{\umarker}[2][black]{%
+    \tikz[baseline=(umarker.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (umarker) {#2};
+        \draw[decoration={penciline,amplitude=4pt},
+        decorate,line width=3.2pt,opacity=0.3,
+        draw=#1] ([yshift=.14em]umarker.south west) -- ([yshift=.14em]umarker.south east);
+    }%
+}%
+
+% useful commands
+
+\newcommand{\tikzmark}[3][]{\tikz[remember picture,baseline] \node [anchor=base,#1](#2) {#3};}
+
+% snippets
+
+\newcommand*{\re}{r_{\mathrm{e}}}
+\newcommand*{\faARMCRGreen}{\textcolor{MCRGreen}{\faArrowCircleRight}}
+\newcommand*{\faARMCRBlue}{\textcolor{MCRBlue}{\faArrowCircleRight}}
+\newcommand*{\faARMCRYellow}{\textcolor{MCRYellow}{\faArrowCircleRight}}
+
+\mode
+<all>
+
