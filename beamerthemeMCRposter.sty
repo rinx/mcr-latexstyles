@@ -202,6 +202,51 @@
     \end{tcolorbox}
 }
 
+\newcommand{\tnumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGreen,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGreen,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{120pt}{120pt}\selectfont\textcolor{MCRGreen}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\tyellownumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRYellow,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRYellow,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{120pt}{120pt}\selectfont\textcolor{MCRYellow}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRYellow}
+        \setbeamercolor{itemize subitem}{fg=MCRYellow}
+        \setbeamercolor{itemize subsubitem}{fg=MCRYellow}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\tbluenumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRBlue,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRBlue,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{120pt}{120pt}\selectfont\textcolor{MCRBlue}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRBlue}
+        \setbeamercolor{itemize subitem}{fg=MCRBlue}
+        \setbeamercolor{itemize subsubitem}{fg=MCRBlue}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\tgraynumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGray,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGray,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{120pt}{120pt}\selectfont\textcolor{MCRGray}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGray}
+        \setbeamercolor{itemize subitem}{fg=MCRGray}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGray}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\trednumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRRed,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRRed,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{120pt}{120pt}\selectfont\textcolor{MCRRed}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRRed}
+        \setbeamercolor{itemize subitem}{fg=MCRRed}
+        \setbeamercolor{itemize subsubitem}{fg=MCRRed}
+        #4
+    \end{tcolorbox}
+}
+
 \newcommand{\ntblock}[2][]{
     \begin{tcolorbox}[enhanced,colframe=MCRGreen!0,colback=white,borderline={2mm}{0pt}{MCRGreen,dash pattern=on 3mm off 3mm,decoration={penciline, amplitude=2mm},decorate},boxsep=5mm, #1]
         \setbeamercolor{itemize item}{fg=MCRGreen}
