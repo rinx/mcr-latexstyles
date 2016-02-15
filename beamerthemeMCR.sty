@@ -198,6 +198,10 @@
   {\usebeamerfont{subtitle}\footnotesize\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
   \fi%     
   \vskip3.2em\par
+  \ifx\insertinstitute\@empty
+  \else
+    {\usebeamerfont{institute}\small\insertinstitute}\\
+  \fi
   {\usebeamerfont{author}\small\insertauthor}
   \vskip.05em\par
   {\usebeamerfont{date}\small\insertdate}
