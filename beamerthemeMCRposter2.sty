@@ -1,0 +1,352 @@
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{fontawesome}
+\usepackage{ragged2e}
+
+
+\usefonttheme[onlymath]{serif}
+
+\makeatletter
+\newcommand{\contacts}[1]{\gdef\insertcontacts{#1}}
+
+% pencil-like shapefill
+% http://tex.stackexchange.com/questions/39296/simulating-hand-drawn-lines
+% http://tex.stackexchange.com/questions/78044/fill-style-that-looks-like-hand-drawn-hand-filled-with-crayon
+\pgfdeclaredecoration{penciline}{initial}{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance,auto corner on length=1mm,]{
+        \pgfpathcurveto%
+        {% From
+            \pgfqpoint{\pgfdecoratedinputsegmentremainingdistance}
+                            {\pgfdecorationsegmentamplitude}
+        }
+        {%  Control 1
+        \pgfmathrand
+        \pgfpointadd{\pgfqpoint{\pgfdecoratedinputsegmentremainingdistance}{0pt}}
+                        {\pgfqpoint{-\pgfdecorationsegmentaspect\pgfdecoratedinputsegmentremainingdistance}%
+                                        {\pgfmathresult\pgfdecorationsegmentamplitude}
+                        }
+        }
+        {%TO 
+        \pgfpointadd{\pgfpointdecoratedinputsegmentlast}{\pgfpoint{1pt}{1pt}}
+        }
+    }
+    \state{final}{}
+}
+\makeatother
+
+\setbeamercolor{alerted text}{fg=MCRBlue}
+\setbeamercolor{structure}{fg=black}
+\setbeamercolor{palette primary}{fg=black,bg=white}
+\setbeamercolor{palette secondary}{fg=MCRBlue, bg=white}
+\setbeamercolor{palette quarternary}{fg=MCRGreen, bg=white}
+\setbeamercolor{headline}{fg=MCRGray,bg=white}
+\setbeamercolor{title in headline}{fg=MCRGreen}
+\setbeamercolor{author in headline}{fg=black}
+\setbeamercolor{institute in headline}{fg=black}
+\setbeamercolor{footline}{bg=white,fg=MCRGray!75}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamercolor{block title}{fg=MCRGreen,bg=white}
+\setbeamercolor{itemize item}{fg=MCRGreen!50}
+\setbeamercolor{itemize subitem}{fg=MCRGreen!50}
+\setbeamercolor{enumerate item}{fg=MCRGreen!50}
+\setbeamercolor{enumerate subitem}{fg=MCRGreen!50}
+
+% for A0 size poster
+% 841 mm x 1189 mm
+\setlength{\topmargin}{0cm}
+\setlength{\hoffset}{-0.7cm}
+\setlength{\voffset}{-2.5cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\textwidth}{80.1cm}
+\setlength{\textheight}{115cm}
+\setlength{\headsep}{0cm}
+\setlength{\headheight}{0cm}
+\setlength{\marginparwidth}{0cm}
+\setlength{\marginparpush}{0cm}
+\setlength{\marginparsep}{0cm}
+\setlength{\footskip}{1cm}
+
+\setbeamertemplate{headline}{
+    \leavevmode
+    \centering
+    \begin{tikzpicture}
+        \draw[draw=none, fill=none] (0,0) rectangle (\textwidth, 8cm);
+        \node[anchor=north west] at (0, 7cm) {
+            \begin{beamercolorbox}[wd=.8\textwidth, sep=7ex]{headline}
+                \usebeamercolor{title in headline}{\hspace{-3.0ex}\color{fg}\fontsize{82pt}{72pt}\textbf{\inserttitle}\\[3ex]}
+                \vspace{2cm}
+                \usebeamercolor{author in headline}{\hspace{-2.0ex}\color{fg}\Large\textcolor{MCRGray!90!black}{\insertauthor}}
+                \usebeamercolor{institute in headline}{\hspace{3.0ex}\color{fg}\textcolor{MCRGray!90!black}{\Large[\!\large\insertinstitute\Large]}\\[1ex]}
+                \usebeamercolor{institute in headline}{\color{fg}\normalsize\textcolor{MCRGray!90!black}{\insertcontacts}}
+            \end{beamercolorbox}
+        };
+        \node[anchor=north east] at (.96\textwidth, 5cm) {\includegraphics[width=8cm]{./img/univlogo_gray.png}};
+        \node[anchor=north east] at (.96\textwidth, 6cm) {\scriptsize\insertsubtitle};
+    \end{tikzpicture}
+}
+
+\setbeamertemplate{block begin}{
+    \vskip.75ex
+    \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex, rounded=true]{block title}%  
+        \usebeamerfont*{block title}\insertblocktitle
+    \end{beamercolorbox}%
+    {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+    \usebeamerfont{block body}%
+    \begin{beamercolorbox}[colsep*=.75ex,sep=.75ex,vmode, rounded=true]{block body}%
+        \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+    }
+    \setbeamertemplate{block end}{
+    \end{beamercolorbox}\vskip1ex
+}
+
+\setbeamertemplate{footline}{
+%     \begin{beamercolorbox}[wd=\textwidth]{separation line}
+%         \rule{0pt}{7pt}
+%     \end{beamercolorbox}
+    \begin{beamercolorbox}[wd=\textwidth, sep=1ex]{footline}
+        \begin{flushright}
+            \insertsubtitle (\insertdate)
+        \end{flushright}
+    \end{beamercolorbox}
+}
+
+
+% \setbeamertemplate{enumerate items}[circle]
+\setbeamercolor{enumerate item}{fg=example text.fg}
+\setbeamertemplate{enumerate item}{\bf \insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\bf \insertenumlabel.}
+\setbeamertemplate{enumerate subsubitem}{\bf \insertenumlabel.}
+
+\setbeamertemplate{itemize item}{\faCheckSquareO}
+\setbeamertemplate{itemize subitem}{\faPlus}
+\setbeamertemplate{itemize subsubitem}{\faMinus}
+
+\setbeamercolor{itemize item}{fg=MCRGreen}
+\setbeamercolor{itemize subitem}{fg=MCRGreen}
+\setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+\setbeamercolor{enumerate item}{fg=MCRGreen}
+\setbeamercolor{enumerate subitem}{fg=MCRGreen}
+\setbeamercolor{enumerate subsubitem}{fg=MCRGreen}
+
+\setbeamerfont{title}{series=\bfseries}
+
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{author in head/foot}{series=\bfseries}
+\setbeamerfont{title in head/foot}{series=\bfseries}
+\setbeamerfont{date in head/foot}{series=\bfseries}
+\setbeamertemplate{caption}[numbered]
+\renewcommand{\figurename}{Fig.}
+
+\setbeamertemplate{section in toc}{
+\bfseries\inserttocsectionnumber. \inserttocsection \par}
+\setbeamertemplate{subsection in toc}{
+\bfseries\hspace{.5cm}\textcolor{MCRGreen!70}{\small\inserttocsectionnumber.\inserttocsubsectionnumber. \inserttocsubsection} \par}
+\setbeamertemplate{subsubsection in toc}{
+\bfseries\hspace{1.0cm}\textcolor{MCRGray}{\footnotesize\inserttocsectionnumber.\inserttocsubsectionnumber.\inserttocsubsubsectionnumber. \inserttocsubsubsection} \par}
+
+\setbeamercolor{caption name}{fg=structure}
+
+% blocks
+
+\newcommand{\tblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGreen,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGreen,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tyellowblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRYellow,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRYellow,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRYellow}
+        \setbeamercolor{itemize subitem}{fg=MCRYellow}
+        \setbeamercolor{itemize subsubitem}{fg=MCRYellow}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tblueblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRBlue,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRBlue,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRBlue}
+        \setbeamercolor{itemize subitem}{fg=MCRBlue}
+        \setbeamercolor{itemize subsubitem}{fg=MCRBlue}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tgrayblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGray,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGray,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRGray}
+        \setbeamercolor{itemize subitem}{fg=MCRGray}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGray}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tredblock}[3][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRRed,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRRed,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRRed}
+        \setbeamercolor{itemize subitem}{fg=MCRRed}
+        \setbeamercolor{itemize subsubitem}{fg=MCRRed}
+        #3
+    \end{tcolorbox}
+}
+
+\newcommand{\tnumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGreen,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGreen,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{72pt}{72pt}\selectfont\textcolor{MCRGreen}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\tyellownumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRYellow,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRYellow,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{72pt}{72pt}\selectfont\textcolor{MCRYellow}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRYellow}
+        \setbeamercolor{itemize subitem}{fg=MCRYellow}
+        \setbeamercolor{itemize subsubitem}{fg=MCRYellow}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\tbluenumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRBlue,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRBlue,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{72pt}{72pt}\selectfont\textcolor{MCRBlue}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRBlue}
+        \setbeamercolor{itemize subitem}{fg=MCRBlue}
+        \setbeamercolor{itemize subsubitem}{fg=MCRBlue}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\tgraynumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRGray,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRGray,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{72pt}{72pt}\selectfont\textcolor{MCRGray}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGray}
+        \setbeamercolor{itemize subitem}{fg=MCRGray}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGray}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\trednumblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=\hspace{-.3cm}{#2},colframe=MCRRed,colback=white,coltitle=black,colbacktitle=white,titlerule=0mm,titlerule style={MCRRed,line width=2mm,dash pattern=on 3mm off 3mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{72pt}{72pt}\selectfont\textcolor{MCRRed}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRRed}
+        \setbeamercolor{itemize subitem}{fg=MCRRed}
+        \setbeamercolor{itemize subsubitem}{fg=MCRRed}
+        #4
+    \end{tcolorbox}
+}
+
+\newcommand{\ntblock}[2][]{
+    \begin{tcolorbox}[enhanced,colframe=MCRGreen!0,colback=white,borderline={2mm}{0pt}{MCRGreen,dash pattern=on 3mm off 3mm,decoration={penciline, amplitude=2mm},decorate},boxsep=5mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #2
+    \end{tcolorbox}
+}
+
+\newcommand{\ntyellowblock}[2][]{
+    \begin{tcolorbox}[enhanced,colframe=MCRYellow!0,colback=white,,borderline={2mm}{0pt}{MCRYellow,dash pattern=on 3mm off 3mm,decoration={penciline, amplitude=2mm},decorate},boxsep=5mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRYellow}
+        \setbeamercolor{itemize subitem}{fg=MCRYellow}
+        \setbeamercolor{itemize subsubitem}{fg=MCRYellow}
+        #2
+    \end{tcolorbox}
+}
+
+\newcommand{\ntblueblock}[2][]{
+    \begin{tcolorbox}[enhanced,colframe=MCRBlue!0,colback=white,,borderline={2mm}{0pt}{MCRBlue,dash pattern=on 3mm off 3mm,decoration={penciline, amplitude=2mm},decorate},boxsep=5mm, #1]
+        \setbeamercolor{itemize item}{fg=MCRBlue}
+        \setbeamercolor{itemize subitem}{fg=MCRBlue}
+        \setbeamercolor{itemize subsubitem}{fg=MCRBlue}
+        #2
+    \end{tcolorbox}
+}
+
+\newcommand{\noborderblock}[4][]{
+    \begin{tcolorbox}[enhanced,adjusted title=#2,colframe=MCRGreen!0,colback=white!0,coltitle=MCRGreen,colbacktitle=white!0,titlerule=0mm,titlerule style={MCRGreen,line width=1mm},boxsep=5mm,toprule=2mm,leftrule=2mm,rightrule=2mm,bottomrule=2mm,overlay={\node[anchor=north east, opacity=0.3] at (frame.north east) {\fontsize{72pt}{72pt}\selectfont\textcolor{MCRGreen}{\textbf{#3}}};}, #1]
+        \setbeamercolor{itemize item}{fg=MCRGreen}
+        \setbeamercolor{itemize subitem}{fg=MCRGreen}
+        \setbeamercolor{itemize subsubitem}{fg=MCRGreen}
+        #4
+    \end{tcolorbox}
+}
+
+
+% pencilmark
+
+\newtcbox{\pencilMark}[1][MCRGreen!30]
+{on line,enhanced,arc=0pt,outer arc=0pt,boxsep=0pt,left=1pt,right=1pt,
+top=2pt,bottom=2pt,boxrule=0pt,bottomrule=0pt,toprule=0pt,
+colupper=black,colback=black!0,colframe=black!0,
+overlay={\draw[#1,decoration={penciline,amplitude=4mm},
+decorate,line width=2.3mm,line join=round] (frame.north east) 
+\foreach \x[remember=\x as \lastx(initially 0)] in {0.25,0.5,0.75,1.0}{
+-- ($(frame.north east)!\lastx!(frame.south east)$)
+-- ($(frame.north east)!\lastx+0.05!(frame.north west)$)}-- (frame.south east)
+\foreach \x[remember=\x as \lastx(initially 0)] in {0.25,0.5,0.75,1.0,1.25}{
+-- ($(frame.south east)!\lastx!(frame.south west)$)
+--($(frame.north west)!\lastx+0.05!(frame.south west)$)};}
+}
+
+
+% bold
+
+\newcommand{\boldtext}[2][black]{
+    \textcolor{#1}{\textbf{#2}}
+}
+
+% underline
+
+\newcommand{\uline}[2][black]{%
+    \tikz[baseline=(uline.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (uline) {#2};
+        \draw[line width=1mm,draw=#1] (uline.south west) -- (uline.south east);
+    }%
+}%
+
+\newcommand{\udash}[2][black]{%
+    \tikz[baseline=(udash.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (udash) {#2};
+        \draw[dash pattern=on 2mm off 2mm,line width=1mm,draw=#1] (udash.south west) -- (udash.south east);
+    }%
+}%
+
+\newcommand{\updash}[2][black]{%
+    \tikz[baseline=(udash.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (udash) {#2};
+        \draw[dash pattern=on 5mm off 3mm,decoration={penciline,amplitude=4mm},
+        decorate,line width=1.5mm,opacity=0.3,
+        draw=#1] (udash.south west) -- (udash.south east);
+    }%
+}%
+
+\newcommand{\umarker}[2][black]{%
+    \tikz[baseline=(umarker.base)]{
+        \node[inner sep=1pt,outer sep=0pt] (umarker) {#2};
+        \draw[decoration={penciline,amplitude=4mm},
+        decorate,line width=3mm,opacity=0.3,
+        draw=#1] ([yshift=.14em]umarker.south west) -- ([yshift=.14em]umarker.south east);
+    }%
+}%
+
+% useful commands
+
+\newcommand{\tikzmark}[3][]{\tikz[remember picture,baseline] \node [anchor=base,#1](#2) {#3};}
+
+% snippets
+
+\newcommand*{\re}{r_{\mathrm{e}}}
+\newcommand*{\faARMCRGreen}{\textcolor{MCRGreen}{\faArrowCircleRight}}
+\newcommand*{\faARMCRBlue}{\textcolor{MCRBlue}{\faArrowCircleRight}}
+\newcommand*{\faARMCRYellow}{\textcolor{MCRYellow}{\faArrowCircleRight}}
+
+
