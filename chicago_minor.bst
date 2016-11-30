@@ -407,18 +407,38 @@ FUNCTION {format.names}
             {s nameptr "{vv~}{ll}{, jj}{, f.}" format.name$ 't := }
         if$
         }
-        {s nameptr "{f.~}{vv~}{ll}{, jj}" format.name$ 't := }
+        s #1 text.prefix$ 'u :=
+        {u is.kanji.str$
+            {s nameptr "{vv~}{ll}{,jj}{ ff}" format.name$ 't := }
+            {s nameptr "{f.~}{vv~}{ll}{, jj}" format.name$ 't := }
+        if$
+        }
       if$
       nameptr #1 >
         { namesleft #1 >
               { ", " * t * }
               { numnames #2 >
                   { "," * }
-                  'skip$
+                  s #1 text.prefix$ 'u :=
+                  {u is.kanji.str$
+                      { "," * }
+                      'skip$
+                  if$
+                  }
                 if$
                 t "others" =
-                    { " {\it et~al}." * }
-                    { " and " * t * } % from Chicago Manual of Style
+                    s #1 text.prefix$ 'u :=
+                    {u is.kanji.str$
+                        { " ら" * }
+                        { " {\it et~al}." * }
+                    if$
+                    }
+                    s #1 text.prefix$ 'u :=
+                    {u is.kanji.str$
+                        { " " * t * }
+                        { " and " * t * } % from Chicago Manual of Style
+                    if$
+                    }
                   if$
                }
                if$
@@ -858,8 +878,9 @@ FUNCTION {format.lab.names}
 { 's :=
   s num.names$ 'numnames :=
   numnames #2 >    % change number to number of others allowed before
-		   % forcing "et al".
-    { s #1 "{vv~}{ll}" format.name$ " {\it et~al}." * }
+    {
+        s #1 "{vv~}{ll}" format.name$ " {\it et~al}." *
+    }
     {
       numnames #1 - 'namesleft :=
       #2 'nameptr :=
@@ -867,8 +888,18 @@ FUNCTION {format.lab.names}
 	{ namesleft #0 > }
 	{ nameptr numnames =
 	    { s nameptr "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-		{ " {\it et~al}." * }
-		{ " and " * s nameptr "{vv~}{ll}" format.name$ * }
+                s #1 text.prefix$ 'u :=
+                {u is.kanji.str$
+                    { " ら" * }
+                    { " {\it et~al}." * }
+                if$
+                }
+                s #1 text.prefix$ 'u :=
+                {u is.kanji.str$
+                    { "・" * s nameptr "{vv~}{ll}" format.name$ * }
+                    { " and " * s nameptr "{vv~}{ll}" format.name$ * }
+                if$
+                }
 	      if$
 	    }
 	    { ", " * s nameptr "{vv~}{ll}" format.name$ * }
