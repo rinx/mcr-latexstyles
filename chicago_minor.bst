@@ -429,7 +429,7 @@ FUNCTION {format.names}
                 t "others" =
                     s #1 text.prefix$ 'u :=
                     {u is.kanji.str$
-                        { " ら" * }
+                        { "ら" * }
                         { " {\it et~al}." * }
                     if$
                     }
@@ -464,11 +464,26 @@ FUNCTION {my.full.label}
               { ", " * t * }
               { numnames #2 >
                   { "," * }
-                  'skip$
+                  s #1 text.prefix$ 'u :=
+                  {u is.kanji.str$
+                      { "," * }
+                      'skip$
+                  if$
+                  }
                 if$
                 t "others" =
-                    { " {\it et~al}." * }
-                    { " and " * t * } % from Chicago Manual of Style
+                    s #1 text.prefix$ 'u :=
+                    {u is.kanji.str$
+                        { "ら" * }
+                        { " {\it et~al}." * }
+                    if$
+                    }
+                    s #1 text.prefix$ 'u :=
+                    {u is.kanji.str$
+                        { " " * t * }
+                        { " and " * t * } % from Chicago Manual of Style
+                    if$
+                    }
                   if$
                }
                if$
@@ -503,8 +518,18 @@ FUNCTION {format.names.fml}
                     'skip$
                   if$
                   t "others" =
-                        { " {\it et~al}." * }
-                        { " and " * t * }
+                        s #1 text.prefix$ 'u :=
+                        {u is.kanji.str$
+                            { "ら" * }
+                            { " {\it et~al}." * }
+                        if$
+                        }
+                        s #1 text.prefix$ 'u :=
+                        {u is.kanji.str$
+                            { "・" * t * }
+                            { " and " * t * } % from Chicago Manual of Style
+                        if$
+                        }
 %                       { " \& " * t * }
                       if$
                 }
