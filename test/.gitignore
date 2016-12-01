@@ -1,0 +1,15 @@
+/lualatex.fmt
+/lualatex.log
+/*.aux
+/*.bbl
+/*.blg
+/*.log
+/*.out
+/*.pdf
+/*.toc
+/*.aux
+/sections/*.aux
+/*.fdb_latexmk
+/*.synctex.gz
+/*.fls
+
