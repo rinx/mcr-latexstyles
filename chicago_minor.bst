@@ -879,7 +879,12 @@ FUNCTION {format.lab.names}
   s num.names$ 'numnames :=
   numnames #2 >    % change number to number of others allowed before
     {
-        s #1 "{vv~}{ll}" format.name$ " {\it et~al}." *
+      s #1 "{vv~}{ll}" format.name$
+      s #1 text.prefix$ 'u :=
+      u is.kanji.str$
+          { "ら" * }
+          { " {\it et~al}." * }
+      if$
     }
     {
       numnames #1 - 'namesleft :=
@@ -890,7 +895,7 @@ FUNCTION {format.lab.names}
 	    { s nameptr "{ff }{vv }{ll}{ jj}" format.name$ "others" =
                 s #1 text.prefix$ 'u :=
                 {u is.kanji.str$
-                    { " ら" * }
+                    { "ら" * }
                     { " {\it et~al}." * }
                 if$
                 }
